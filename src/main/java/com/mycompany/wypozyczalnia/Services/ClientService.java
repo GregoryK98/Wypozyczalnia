@@ -1,0 +1,26 @@
+package com.mycompany.wypozyczalnia.Services;
+
+import com.mycompany.wypozyczalnia.ConsoleProviders.ClientConsoleProvider;
+import com.mycompany.wypozyczalnia.IProvider.IClientProvider;
+import com.mycompany.wypozyczalnia.Models.Client;
+import com.mycompany.wypozyczalnia.Repositories.ClientRepository;
+
+public class ClientService {
+    private IClientProvider _clientProvider;
+    private ClientRepository _clientRepository;
+
+    public ClientService(IClientProvider clientProvider, ClientRepository clientRepository) {
+        _clientProvider = clientProvider;
+        _clientRepository = clientRepository;
+    }
+
+    public String addClient() {
+        Client client = _clientProvider.readClient();
+        try {
+            _clientRepository.create(client);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return "Client added.\n";
+    }
+}
