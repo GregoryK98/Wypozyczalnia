@@ -15,12 +15,22 @@ public class ClientService {
     }
 
     public String addClient() {
-        Client client = _clientProvider.readClient();
+        Client client = _clientProvider.readClient(false);
         try {
             _clientRepository.create(client);
         } catch (Exception e) {
             return e.getMessage();
         }
         return "Client added.\n";
+    }
+
+    public String updateClient() {
+        Client client = _clientProvider.readClient(true);
+        try {
+            _clientRepository.update(client);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return "Client updated.\n";
     }
 }

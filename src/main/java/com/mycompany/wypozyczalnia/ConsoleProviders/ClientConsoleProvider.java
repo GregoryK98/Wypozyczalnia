@@ -12,9 +12,12 @@ public class ClientConsoleProvider implements IClientProvider {
         _scanner = scanner;
     }
 
-    public Client readClient() {
+    public Client readClient(boolean readId) {
         Client client = new Client();
-
+        if (readId) {
+            System.out.print("Id: ");
+            client.ID = _scanner.nextInt();
+        }
         System.out.print("Imie: ");
         client.Imie = _scanner.next();
         System.out.print("Nazwisko: ");

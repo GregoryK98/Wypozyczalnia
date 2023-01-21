@@ -20,13 +20,23 @@ public class ClientRepository {
             stmt.setString(2, client.Nazwisko);
             stmt.setString(3, client.Adres);
             stmt.setString(4, client.NumerTelefonu);
-            int rowsAffected = stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch(SQLException e) {
             throw e;
         }
     }
-    public void update(Client client) {
+    public void update(Client client) throws SQLException {
+        try (PreparedStatement stmt = _conn.prepareStatement("UPDATE Klienci SET Imie = ?, Nazwisko = ?, Adres = ?, Numer_telefonu = ? WHERE ID_klienta = ?")) {
+            stmt.setString(1, client.Imie);
+            stmt.setString(2, client.Nazwisko);
+            stmt.setString(3, client.Adres);
+            stmt.setString(4, client.NumerTelefonu);
+            stmt.setString(5, String.valueOf(client.ID));
 
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            throw e;
+        }
     }
     public void getAll(Client client) {
 
