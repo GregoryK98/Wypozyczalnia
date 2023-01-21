@@ -5,6 +5,8 @@ import com.mycompany.wypozyczalnia.IProvider.IClientProvider;
 import com.mycompany.wypozyczalnia.Models.Client;
 import com.mycompany.wypozyczalnia.Repositories.ClientRepository;
 
+import java.util.List;
+
 public class ClientService {
     private IClientProvider _clientProvider;
     private ClientRepository _clientRepository;
@@ -32,5 +34,14 @@ public class ClientService {
             return e.getMessage();
         }
         return "Client updated.\n";
+    }
+
+    public String showAll() {
+        try {
+            _clientProvider.writeClients(_clientRepository.getAll());
+            return "";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }

@@ -3,6 +3,10 @@ package com.mycompany.wypozyczalnia.ConsoleProviders;
 import com.mycompany.wypozyczalnia.IProvider.IClientProvider;
 import com.mycompany.wypozyczalnia.Models.Client;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 import java.util.Scanner;
 
 public class ClientConsoleProvider implements IClientProvider {
@@ -28,5 +32,15 @@ public class ClientConsoleProvider implements IClientProvider {
         client.NumerTelefonu = _scanner.next();
 
         return client;
+    }
+
+    public void writeClients(List<Client> clients) {
+        for(Client client : clients) {
+            System.out.println("ID: " + client.ID
+                    + ", Imie: " + client.Imie
+                    + ", Nazwisko: " + client.Nazwisko
+                    + ", Adres: " + client.Adres
+                    + ", Numer telefonu: " + client.NumerTelefonu);
+        }
     }
 }

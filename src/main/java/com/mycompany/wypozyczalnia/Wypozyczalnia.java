@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
-import java.util.logging.ConsoleHandler;
 
 
 public class Wypozyczalnia {
@@ -36,26 +35,17 @@ public class Wypozyczalnia {
 
             while (!exit) {
                 System.out.println("");
-                System.out.println("1. Show clients");
-                System.out.println("2. Show equipment");
-                System.out.println("3. Show rentals");
-                System.out.println("4. Add client");
-                System.out.println("5. Add equipment");
-                System.out.println("6. Add rental");
-                System.out.println("7. Update client");
-                System.out.println("8. Update equipment");
-                System.out.println("9. Update rental");
-                System.out.println("10. Delete client");
-                System.out.println("11. Delete equipment");
-                System.out.println("12. Delete rental");
-                System.out.println("13. Exit");
-                System.out.print("Choose an option: ");
+                System.out.println("  Element  | Show | Add | Update | Delete");
+                System.out.println(" Client    |  1   |  4  |   7    |   10  ");
+                System.out.println(" Equipment |  2   |  5  |   8    |   11  ");
+                System.out.println(" Rental    |  3   |  6  |   9    |   12  ");
+                System.out.print("Press 13 to Exit or choose an option: ");
                 int option = scanner.nextInt();
                 System.out.println("");
 
                 switch (option) {
                     case 1:
-                        showClients(conn);
+                        showClients(clientService);
                         break;
                     case 2:
                         showEquipment(conn);
@@ -101,23 +91,10 @@ public class Wypozyczalnia {
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
-
     }
 
-    private static void showClients(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Klienci");
-            while (rs.next()) {
-                int id = rs.getInt("ID_klienta");
-                String imie = rs.getString("Imie");
-                String nazwisko = rs.getString("Nazwisko");
-                String adres = rs.getString("Adres");
-                String numer_telefonu = rs.getString("Numer_telefonu");
-                System.out.println("ID: " + id + ", Imie: " + imie + ", Nazwisko: " + nazwisko + ", Adres: " + adres + ", Numer telefonu: " + numer_telefonu);
-            }
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void showClients(ClientService clientService) {
+        System.out.println(clientService.showAll());
     }
 
     private static void showEquipment(Connection conn) {
@@ -171,8 +148,7 @@ public class Wypozyczalnia {
     }
 
     private static void addClient(ClientService clientService) {
-        String message = clientService.addClient();
-        System.out.println(message);
+        System.out.println(clientService.addClient());
     }
 
     private static void addRental(Connection conn, Scanner scanner) {
@@ -205,8 +181,7 @@ public class Wypozyczalnia {
     }
 
     private static void updateClient(ClientService clientService) {
-        String message = clientService.updateClient();
-        System.out.println(message);
+        System.out.println(clientService.updateClient());
     }
 
     private static void updateEquipment(Connection conn, Scanner scanner) {
