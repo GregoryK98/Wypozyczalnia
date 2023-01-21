@@ -1,15 +1,16 @@
 package com.mycompany.wypozyczalnia.Services;
 
 import com.mycompany.wypozyczalnia.IProvider.IClientProvider;
+import com.mycompany.wypozyczalnia.IRepositories.IClientRepository;
 import com.mycompany.wypozyczalnia.Models.Client;
 import com.mycompany.wypozyczalnia.Repositories.ClientRepository;
 import com.mycompany.wypozyczalnia.Validators.ClientValidator;
 
 public class ClientService {
     private IClientProvider _clientProvider;
-    private ClientRepository _clientRepository;
+    private IClientRepository _clientRepository;
 
-    public ClientService(IClientProvider clientProvider, ClientRepository clientRepository) {
+    public ClientService(IClientProvider clientProvider, IClientRepository clientRepository) {
         _clientProvider = clientProvider;
         _clientRepository = clientRepository;
     }

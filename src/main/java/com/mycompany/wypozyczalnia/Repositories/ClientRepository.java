@@ -1,12 +1,13 @@
 package com.mycompany.wypozyczalnia.Repositories;
 
+import com.mycompany.wypozyczalnia.IRepositories.IClientRepository;
 import com.mycompany.wypozyczalnia.Models.Client;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientRepository {
+public class ClientRepository implements IClientRepository {
 
     private Connection _conn;
 
