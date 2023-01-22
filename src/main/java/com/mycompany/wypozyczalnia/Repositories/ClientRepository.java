@@ -27,7 +27,7 @@ public class ClientRepository {
     public void update(Client client) {
         try (PreparedStatement stmt = _conn.prepareStatement("INSERT INTO db.Klienci (Imie, Nazwisko, Adres, Numer_telefonu) VALUES (?, ?, ?, ?)")) {
             stmt.setString(1, client.Imie);
-            stmt.setString(2, client.Nazwisko;
+            stmt.setString(2, client.Nazwisko);
             stmt.setString(3, client.Adres);
             stmt.setString(4, client.NumerTelefonu);
             int rowsAffected = stmt.executeUpdate();
