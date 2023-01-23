@@ -1,7 +1,6 @@
 package com.mycompany.wypozyczalnia.Services;
 
 import com.mycompany.wypozyczalnia.IProvider.IEquipmentProvider;
-import com.mycompany.wypozyczalnia.IRepositories.IEquipmentRepository;
 import com.mycompany.wypozyczalnia.Models.Equipment;
 import com.mycompany.wypozyczalnia.Repositories.EquipmentRepository;
 import com.mycompany.wypozyczalnia.Validators.EquipmentValidator;
@@ -27,7 +26,7 @@ public class EquipmentServiceTest {
     @Test
     void add_return_equipment_added_if_everything_ok() throws SQLException {
         Equipment equipment = new Equipment();
-        equipment.Nazwa = "Narty versja 2000";
+        equipment.Nazwa = "versja";
         equipment.Typ = "Narty";
         equipment.Dostepnosc = true;
 
@@ -35,7 +34,7 @@ public class EquipmentServiceTest {
         assertNotNull(equipmentProviderMock);
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
-        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock, (IEquipmentRepository) equipmentRepositoryMock);
+        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock,equipmentRepositoryMock);
         assertTrue(equipmentService.addEquipment().equals("Equipmnet added.\n"));
     }
 
@@ -50,7 +49,7 @@ public class EquipmentServiceTest {
         assertNotNull(equipmentProviderMock);
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
-        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock, (IEquipmentRepository) equipmentRepositoryMock);
+        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock,equipmentRepositoryMock);
         assertTrue(equipmentService.addEquipment().equals("Equipmnet  cannot be added because is not valid.\n"));
     }
 }

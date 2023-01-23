@@ -2,12 +2,16 @@ package com.mycompany.wypozyczalnia;
 
 import com.mycompany.wypozyczalnia.ConsoleProviders.ClientConsoleProvider;
 import com.mycompany.wypozyczalnia.ConsoleProviders.EquipmentConsoleProvider;
+import com.mycompany.wypozyczalnia.ConsoleProviders.RentalConsoleProvider;
 import com.mycompany.wypozyczalnia.IProvider.IEquipmentProvider;
 import com.mycompany.wypozyczalnia.IRepositories.IEquipmentRepository;
+import com.mycompany.wypozyczalnia.Models.Rental;
 import com.mycompany.wypozyczalnia.Repositories.ClientRepository;
 import com.mycompany.wypozyczalnia.Repositories.EquipmentRepository;
+import com.mycompany.wypozyczalnia.Repositories.RentalRepository;
 import com.mycompany.wypozyczalnia.Services.ClientService;
 import com.mycompany.wypozyczalnia.Services.EquipmentService;
+import com.mycompany.wypozyczalnia.Services.RentalService;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -39,7 +43,10 @@ public class Wypozyczalnia {
             ClientService clientService = new ClientService(clientConsoleProvider, clientRepository);
             EquipmentConsoleProvider equipmentConsoleProvider = new EquipmentConsoleProvider((scanner));
             EquipmentRepository equipmentRepository = new EquipmentRepository(conn);
-            EquipmentService equipmentService = new EquipmentService(equipmentConsoleProvider, (IEquipmentRepository) equipmentRepository); // IEquipmentRepository nie wiem dlaczego każe to tu dodać
+            EquipmentService equipmentService = new EquipmentService(equipmentConsoleProvider, equipmentRepository); // IEquipmentRepository nie wiem dlaczego każe to tu dodać
+            RentalConsoleProvider rentalConsoleProvider = new RentalConsoleProvider(scanner);
+            RentalRepository rentalRepository = new RentalRepository(conn);
+            RentalService rentalService = new RentalService(rentalConsoleProvider, rentalRepository);
 
             while (!exit) {
                 System.out.println("");
@@ -59,7 +66,7 @@ public class Wypozyczalnia {
                         showEquipment(equipmentService);
                         break;
                     case 3:
-                        showRentals(conn);
+                        showRental(rentalService);
                         break;
                     case 4:
                         addClient(clientService);
@@ -68,7 +75,7 @@ public class Wypozyczalnia {
                         addEquipment(equipmentService);
                         break;
                     case 6:
-                        addRental(conn, scanner);
+                        addRental(rentalService);
                         break;
                     case 7:
                         updateClient(clientService);
@@ -77,7 +84,7 @@ public class Wypozyczalnia {
                         updateEquipment(equipmentService);
                         break;
                     case 9:
-                        updateRental(conn, scanner);
+                        updateRental(rentalService);
                         break;
                     case 10:
                         deleteClient(conn, scanner);
@@ -107,23 +114,9 @@ public class Wypozyczalnia {
 
     private static void showEquipment(EquipmentService equipmentService) {System.out.println(equipmentService.showAllEq());
     }
-    private static void showRentals(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Wypozyczenia");
-            while (rs.next()) {
-                int id = rs.getInt("ID_wypozyczenia");
-                int id_klienta = rs.getInt("ID_klienta");
-                int id_sprzetu = rs.getInt("ID_sprzetu");
-                Date data_wypozyczenia = rs.getDate("Data_wypozyczenia");
-                Date data_zwrotu = rs.getDate("Data_zwrotu");
-                float koszt = rs.getFloat("Koszt");
-                System.out.println("ID: " + id + ", ID Klienta: " + id_klienta + ", ID Sprzetu: " + id_sprzetu + ", Data wypozyczenia: " + data_wypozyczenia + ", Data zwrotu: " + data_zwrotu + ", Koszt: " + koszt);
-            }
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void showRental(RentalService rentalService) {
+        System.out.println(rentalService.showAll());
     }
-
     private static void addEquipment(EquipmentService equipmentService) {
         System.out.println(equipmentService.addEquipment());
     }
@@ -131,33 +124,8 @@ public class Wypozyczalnia {
         System.out.println(clientService.addClient());
     }
 
-    private static void addRental(Connection conn, Scanner scanner) {
-        System.out.print("ID Klienta: ");
-        int id_klienta = scanner.nextInt();
-        System.out.print("ID Sprzetu: ");
-        int id_sprzetu = scanner.nextInt();
-        System.out.print("Data wypozyczenia (yyyy-mm-dd): ");
-        String data_wypozyczenia = scanner.next();
-        System.out.print("Data zwrotu (yyyy-mm-dd): ");
-        String data_zwrotu = scanner.next();
-        System.out.print("Koszt: ");
-        float koszt = scanner.nextFloat();
-        try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO Wypozyczenia (ID_klienta, ID_sprzetu, Data_wypozyczenia, Data_zwrotu, Koszt) VALUES (?, ?, ?, ?, ?)")) {
-            stmt.setInt(1, id_klienta);
-            stmt.setInt(2, id_sprzetu);
-            stmt.setString(3, data_wypozyczenia);
-            stmt.setString(4, data_zwrotu);
-            stmt.setFloat(5, koszt);
-            int rowsAffected = stmt.executeUpdate();
-            System.out.println(rowsAffected + " row(s) affected.");
-            // Update equipment availability
-            try (PreparedStatement stmt2 = conn.prepareStatement("UPDATE Sprzet SET Dostepnosc = false WHERE ID_sprzetu = ?")) {
-                stmt2.setInt(1, id_sprzetu);
-                stmt2.executeUpdate();
-            }
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void addRental(RentalService rentalService) {
+        System.out.println(rentalService.addRental());
     }
 
     private static void updateClient(ClientService clientService) {
@@ -167,33 +135,8 @@ public class Wypozyczalnia {
     private static void updateEquipment(EquipmentService equipmentService) {
         System.out.println(equipmentService.updateEquipment());
     }
-
-
-    private static void updateRental(Connection conn, Scanner scanner) {
-        System.out.print("ID Wypozyczenia: ");
-        int id_wypozyczenia = scanner.nextInt();
-        System.out.print("New ID Klienta: ");
-        int id_klienta = scanner.nextInt();
-        System.out.print("New ID Sprzetu: ");
-        int id_sprzetu = scanner.nextInt();
-        System.out.print("New Data wypozyczenia (yyyy-mm-dd): ");
-        String data_wypozyczenia = scanner.next();
-        System.out.print("New Data zwrotu (yyyy-mm-dd): ");
-        String data_zwrotu = scanner.next();
-        System.out.print("New Koszt: ");
-        float koszt = scanner.nextFloat();
-        try (PreparedStatement stmt = conn.prepareStatement("UPDATE Wypozyczenia SET ID_klienta = ?, ID_sprzetu = ?, Data_wypozyczenia = ?, Data_zwrotu = ?, Koszt = ? WHERE ID_wypozyczenia = ?")) {
-            stmt.setInt(1, id_klienta);
-            stmt.setInt(2, id_sprzetu);
-            stmt.setString(3, data_wypozyczenia);
-            stmt.setString(4, data_zwrotu);
-            stmt.setFloat(5, koszt);
-            stmt.setInt(6, id_wypozyczenia);
-            int rowsAffected = stmt.executeUpdate();
-            System.out.println(rowsAffected + " row(s) affected.");
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void updateRental(RentalService rentalService) {
+        System.out.println(rentalService.updateRental());
     }
 
     private static void deleteClient(Connection conn, Scanner scanner) {

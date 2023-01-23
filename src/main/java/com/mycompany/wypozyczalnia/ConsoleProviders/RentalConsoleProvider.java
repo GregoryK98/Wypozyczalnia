@@ -1,12 +1,13 @@
 package com.mycompany.wypozyczalnia.ConsoleProviders;
 
+import com.mycompany.wypozyczalnia.IProvider.IRentalProvider;
 import com.mycompany.wypozyczalnia.Models.Client;
 import com.mycompany.wypozyczalnia.Models.Rental;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class RentalConsoleProvider {
+public class RentalConsoleProvider implements IRentalProvider {
     private Scanner _scanner;
 
     public RentalConsoleProvider(Scanner scanner) {

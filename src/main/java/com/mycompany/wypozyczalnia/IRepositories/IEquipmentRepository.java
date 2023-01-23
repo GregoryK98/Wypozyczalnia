@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IEquipmentRepository {
 
-    public void create(Equipment equipment) throws SQLException;
+    public void createEq(Equipment equipment) throws SQLException;
 
-    public void update(Equipment equipment) throws SQLException;
+    public void updateEq(Equipment equipment) throws SQLException;
 
     public List<Equipment> getAllEq() throws SQLException;
 }
