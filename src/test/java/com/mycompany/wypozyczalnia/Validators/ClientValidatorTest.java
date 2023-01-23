@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ClientValidatorTest {
 
     @Test
-    void numer_valid_if_everything_is_ok() {
+    void client_valid_if_everything_is_ok() {
         Client client = new Client();
         client.Imie = "Quentin";
         client.Nazwisko = "Tarantino";
@@ -19,7 +19,7 @@ class ClientValidatorTest {
     }
 
     @Test
-    void numer_invalid_if_imie_is_empty() {
+    void client_invalid_if_imie_is_empty() {
         Client client = new Client();
         client.Imie = "";
         client.Nazwisko = "Tarantino";
@@ -30,7 +30,7 @@ class ClientValidatorTest {
     }
 
     @Test
-    void numer_invalid_if_nazwisko_is_empty() {
+    void client_invalid_if_nazwisko_is_empty() {
         Client client = new Client();
         client.Imie = "Quentin";
         client.Nazwisko = "";
@@ -41,7 +41,7 @@ class ClientValidatorTest {
     }
 
     @Test
-    void numer_invalid_if_adres_is_empty() {
+    void client_invalid_if_adres_is_empty() {
         Client client = new Client();
         client.Imie = "Quentin";
         client.Nazwisko = "Tarantino";
@@ -52,7 +52,7 @@ class ClientValidatorTest {
     }
 
     @Test
-    void numer_invalid_if_numer_is_empty() {
+    void client_invalid_if_numer_is_empty() {
         Client client = new Client();
         client.Imie = "Quentin";
         client.Nazwisko = "Tarantino";
@@ -63,7 +63,7 @@ class ClientValidatorTest {
     }
 
     @Test
-    void numer_invalid_if_numer_is_invalid() {
+    void client_invalid_if_numer_is_invalid() {
         Client client = new Client();
         client.Imie = "Quentin";
         client.Nazwisko = "Tarantino";
