@@ -12,8 +12,7 @@ import org.mockito.stubbing.OngoingStubbing;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +34,7 @@ public class EquipmentServiceTest {
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
         EquipmentService equipmentService = new EquipmentService(equipmentProviderMock,equipmentRepositoryMock);
-        assertTrue(equipmentService.addEquipment().equals("Equipmnet added.\n"));
+        assertTrue(equipmentService.addEquipment().equals("Equipment added.\n"));
     }
 
     @Test
@@ -50,6 +49,6 @@ public class EquipmentServiceTest {
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
         EquipmentService equipmentService = new EquipmentService(equipmentProviderMock,equipmentRepositoryMock);
-        assertTrue(equipmentService.addEquipment().equals("Equipmnet  cannot be added because is not valid.\n"));
+        assertFalse(equipmentService.addEquipment().equals("Equipment cannot be updated because new equipmnets data are not not valid.\n"));
     }
 }
