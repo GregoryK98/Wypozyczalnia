@@ -1,8 +1,13 @@
 package com.mycompany.wypozyczalnia;
 
 import com.mycompany.wypozyczalnia.ConsoleProviders.ClientConsoleProvider;
+import com.mycompany.wypozyczalnia.ConsoleProviders.EquipmentConsoleProvider;
+import com.mycompany.wypozyczalnia.IProvider.IEquipmentProvider;
+import com.mycompany.wypozyczalnia.IRepositories.IEquipmentRepository;
 import com.mycompany.wypozyczalnia.Repositories.ClientRepository;
+import com.mycompany.wypozyczalnia.Repositories.EquipmentRepository;
 import com.mycompany.wypozyczalnia.Services.ClientService;
+import com.mycompany.wypozyczalnia.Services.EquipmentService;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -32,6 +37,9 @@ public class Wypozyczalnia {
             ClientConsoleProvider clientConsoleProvider = new ClientConsoleProvider(scanner);
             ClientRepository clientRepository = new ClientRepository(conn);
             ClientService clientService = new ClientService(clientConsoleProvider, clientRepository);
+            EquipmentConsoleProvider equipmentConsoleProvider = new EquipmentConsoleProvider((scanner));
+            EquipmentRepository equipmentRepository = new EquipmentRepository(conn);
+            EquipmentService equipmentService = new EquipmentService(equipmentConsoleProvider, (IEquipmentRepository) equipmentRepository); // IEquipmentRepository nie wiem dlaczego każe to tu dodać
 
             while (!exit) {
                 System.out.println("");
@@ -48,7 +56,7 @@ public class Wypozyczalnia {
                         showClients(clientService);
                         break;
                     case 2:
-                        showEquipment(conn);
+                        showEquipment(equipmentService);
                         break;
                     case 3:
                         showRentals(conn);
@@ -57,7 +65,7 @@ public class Wypozyczalnia {
                         addClient(clientService);
                         break;
                     case 5:
-                        addEquipment(conn, scanner);
+                        addEquipment(equipmentService);
                         break;
                     case 6:
                         addRental(conn, scanner);
@@ -66,7 +74,7 @@ public class Wypozyczalnia {
                         updateClient(clientService);
                         break;
                     case 8:
-                        updateEquipment(conn, scanner);
+                        updateEquipment(equipmentService);
                         break;
                     case 9:
                         updateRental(conn, scanner);
@@ -97,21 +105,8 @@ public class Wypozyczalnia {
         System.out.println(clientService.showAll());
     }
 
-    private static void showEquipment(Connection conn) {
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Sprzet");
-            while (rs.next()) {
-                int id = rs.getInt("ID_sprzetu");
-                String nazwa = rs.getString("Nazwa");
-                String typ = rs.getString("Typ");
-                boolean dostepnosc = rs.getBoolean("Dostepnosc");
-                System.out.println("ID: " + id + ", Nazwa: " + nazwa + ", Typ: " + typ + ", Dostepnosc: " + dostepnosc);
-            }
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void showEquipment(EquipmentService equipmentService) {System.out.println(equipmentService.showAllEq());
     }
-
     private static void showRentals(Connection conn) {
         try (Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT * FROM Wypozyczenia");
@@ -129,24 +124,9 @@ public class Wypozyczalnia {
         }
     }
 
-    private static void addEquipment(Connection conn, Scanner scanner) {
-        System.out.print("Nazwa: ");
-        String nazwa = scanner.next();
-        System.out.print("Typ: ");
-        String typ = scanner.next();
-        System.out.print("Dostepnosc (1-tak/0-nie): ");
-        boolean dostepnosc = scanner.nextInt() == 1;
-        try (PreparedStatement stmt = conn.prepareStatement("INSERT INTO Sprzet (Nazwa, Typ, Dostepnosc) VALUES (?, ?, ?)")) {
-            stmt.setString(1, nazwa);
-            stmt.setString(2, typ);
-            stmt.setBoolean(3, dostepnosc);
-            int rowsAffected = stmt.executeUpdate();
-            System.out.println(rowsAffected + " row(s) affected.");
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void addEquipment(EquipmentService equipmentService) {
+        System.out.println(equipmentService.addEquipment());
     }
-
     private static void addClient(ClientService clientService) {
         System.out.println(clientService.addClient());
     }
@@ -184,26 +164,10 @@ public class Wypozyczalnia {
         System.out.println(clientService.updateClient());
     }
 
-    private static void updateEquipment(Connection conn, Scanner scanner) {
-        System.out.print("ID Sprzetu: ");
-        int id_sprzetu = scanner.nextInt();
-        System.out.print("New Nazwa: ");
-        String nazwa = scanner.next();
-        System.out.print("New Typ: ");
-        String typ = scanner.next();
-        System.out.print("New Dostepnosc (1-tak/0-nie): ");
-        boolean dostepnosc = scanner.nextInt() == 1;
-        try (PreparedStatement stmt = conn.prepareStatement("UPDATE Sprzet SET Nazwa = ?, Typ = ?, Dostepnosc = ? WHERE ID_sprzetu = ?")) {
-            stmt.setString(1, nazwa);
-            stmt.setString(2, typ);
-            stmt.setBoolean(3, dostepnosc);
-            stmt.setInt(4, id_sprzetu);
-            int rowsAffected = stmt.executeUpdate();
-            System.out.println(rowsAffected + " row(s) affected.");
-        } catch (SQLException e) {
-            System.out.println("An error occurred while executing the query: " + e.getMessage());
-        }
+    private static void updateEquipment(EquipmentService equipmentService) {
+        System.out.println(equipmentService.updateEquipment());
     }
+
 
     private static void updateRental(Connection conn, Scanner scanner) {
         System.out.print("ID Wypozyczenia: ");
