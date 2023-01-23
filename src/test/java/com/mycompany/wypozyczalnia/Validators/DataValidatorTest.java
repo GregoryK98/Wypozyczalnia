@@ -6,8 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DataValidatorTest {
-    //        System.out.println(isValid("31/02/2022")); // false
+//        System.out.println(isValid("29/02/2000")); // true
+//        System.out.println(isValid("29/02/1900")); // false
+//        System.out.println(isValid("31/02/2022")); // false
 //        System.out.println(isValid("28/02/2022")); // true
+//    }
     @Test
     void date_valid() {
         String data = "31/01/2022";
@@ -41,5 +44,17 @@ class DataValidatorTest {
         String data = "3101/2022";
         DataValidator dataValidator = new DataValidator();
         assertFalse(dataValidator.DataValidate(data));
+    }
+    @Test
+    void date_when_year_is_not_leap() {
+        String data = "29/02/1900";
+        DataValidator dataValidator = new DataValidator();
+        assertFalse(dataValidator.DataValidate(data));
+    }
+    @Test
+    void date_when_year_is_leap() {
+        String data = "29/02/2000";
+        DataValidator dataValidator = new DataValidator();
+        assertTrue(dataValidator.DataValidate(data));
     }
 }
