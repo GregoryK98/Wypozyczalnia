@@ -1,19 +1,20 @@
 package com.mycompany.wypozyczalnia.Repositories;
 
+import com.mycompany.wypozyczalnia.IRepositories.IEquipmentRepository;
 import com.mycompany.wypozyczalnia.Models.Equipment;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EquipmentRepository {
+public class EquipmentRepository implements IEquipmentRepository {
     private Connection _conn;
 
     public EquipmentRepository(Connection conn) throws SQLException {
         _conn = conn;
     }
 
-    public void createEq(Equipment equipment) throws SQLException {
+    public void create(Equipment equipment) throws SQLException {
         try (PreparedStatement stmt = _conn.prepareStatement("INSERT INTO db.Sprzet (Nazwa, Typ, Dostepnosc) VALUES (?, ?, ?)")) {
             stmt.setString(1, equipment.Nazwa);
             stmt.setString(2, equipment.Typ);
@@ -25,7 +26,7 @@ public class EquipmentRepository {
         }
     }
 
-    public void updateEquipment(Equipment equipment) throws SQLException {
+    public void update(Equipment equipment) throws SQLException {
         try (PreparedStatement stmt = _conn.prepareStatement("UPDATE db.Sprzet SET Nazwa = ?, Typ = ?, Dostepnosc = ? WHERE ID_sprzetu = ?")) {
             stmt.setString(1, equipment.Nazwa);
             stmt.setString(2, equipment.Typ);

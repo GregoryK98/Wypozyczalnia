@@ -36,7 +36,7 @@ public class EquipmentServiceTest {
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
         EquipmentService equipmentService = new EquipmentService(equipmentProviderMock, (IEquipmentRepository) equipmentRepositoryMock);
-        assertTrue(equipmentService.addEquipment().equals("Equipmnet added.\n"));
+        assertTrue(equipmentService.addEquipment().equals("Equipment added.\n"));
     }
 
     @Test
@@ -51,6 +51,6 @@ public class EquipmentServiceTest {
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
         EquipmentService equipmentService = new EquipmentService(equipmentProviderMock, (IEquipmentRepository) equipmentRepositoryMock);
-        assertTrue(equipmentService.addEquipment().equals("Equipmnet  cannot be added because is not valid.\n"));
+        assertTrue(equipmentService.addEquipment().equals("Equipment cannot be added because is not valid.\n"));
     }
 }
