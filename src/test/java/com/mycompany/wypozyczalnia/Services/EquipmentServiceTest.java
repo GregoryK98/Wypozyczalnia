@@ -1,6 +1,7 @@
 package com.mycompany.wypozyczalnia.Services;
 
 import com.mycompany.wypozyczalnia.IProvider.IEquipmentProvider;
+import com.mycompany.wypozyczalnia.IRepositories.IEquipmentRepository;
 import com.mycompany.wypozyczalnia.Models.Equipment;
 import com.mycompany.wypozyczalnia.Repositories.EquipmentRepository;
 import com.mycompany.wypozyczalnia.Validators.EquipmentValidator;
@@ -12,7 +13,8 @@ import org.mockito.stubbing.OngoingStubbing;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,7 +27,7 @@ public class EquipmentServiceTest {
     @Test
     void add_return_equipment_added_if_everything_ok() throws SQLException {
         Equipment equipment = new Equipment();
-        equipment.Nazwa = "versja";
+        equipment.Nazwa = "Narty versja 2000";
         equipment.Typ = "Narty";
         equipment.Dostepnosc = true;
 
@@ -33,12 +35,12 @@ public class EquipmentServiceTest {
         assertNotNull(equipmentProviderMock);
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
-        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock,equipmentRepositoryMock);
+        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock, (IEquipmentRepository) equipmentRepositoryMock);
         assertTrue(equipmentService.addEquipment().equals("Equipment added.\n"));
     }
 
     @Test
-    void add_return_equipment_invalid_if_invalid_equipment() throws SQLException {
+    void add_return_equipment_invalid_if_invalid_equipment_ok() throws SQLException {
         Equipment equipment = new Equipment();
         equipment.Nazwa = "Narty versja 2000";
         equipment.Typ = "";
@@ -48,7 +50,7 @@ public class EquipmentServiceTest {
         assertNotNull(equipmentProviderMock);
         when(equipmentProviderMock.readEquipment(false)).thenReturn(equipment);
 
-        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock,equipmentRepositoryMock);
-        assertFalse(equipmentService.addEquipment().equals("Equipment cannot be updated because new equipmnets data are not not valid.\n"));
+        EquipmentService equipmentService = new EquipmentService(equipmentProviderMock, (IEquipmentRepository) equipmentRepositoryMock);
+        assertTrue(equipmentService.addEquipment().equals("Equipment cannot be added because is not valid.\n"));
     }
 }
