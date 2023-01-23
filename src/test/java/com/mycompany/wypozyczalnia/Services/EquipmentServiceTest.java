@@ -38,7 +38,7 @@ public class EquipmentServiceTest {
     }
 
     @Test
-    void add_return_equipment_invalid_if_invalid_equipment_ok() throws SQLException {
+    void add_return_equipment_invalid_if_invalid_equipment() throws SQLException {
         Equipment equipment = new Equipment();
         equipment.Nazwa = "Narty versja 2000";
         equipment.Typ = "";
