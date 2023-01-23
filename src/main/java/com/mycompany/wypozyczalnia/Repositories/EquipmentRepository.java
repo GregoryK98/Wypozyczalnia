@@ -48,7 +48,7 @@ public class EquipmentRepository implements IEquipmentRepository {
                 equipment.ID_Sprzetu = rs.getInt("ID_Sprzetu");
                 equipment.Nazwa = rs.getString("Nazwa");
                 equipment.Typ = rs.getString("Typ");
-                equipment.Dostepnosc = Boolean.parseBoolean(rs.getString("Dostępność"));
+                equipment.Dostepnosc = Boolean.parseBoolean(rs.getString("Dostepnosc"));
                 equipments.add(equipment);
             }
         } catch (SQLException e) {

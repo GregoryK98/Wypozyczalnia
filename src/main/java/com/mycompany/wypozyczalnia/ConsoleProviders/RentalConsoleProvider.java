@@ -24,7 +24,10 @@ public class RentalConsoleProvider implements IRentalProvider {
         rental.DataWypozyczenia = _scanner.next();
         System.out.print("Data zwrotu: ");
         rental.DataZwrotu = _scanner.next();
-
+        System.out.print("Id klienta: ");
+        rental.IDKlienta = _scanner.nextInt();
+        System.out.print("Id sprzętu: ");
+        rental.IDSprzetu = _scanner.nextInt();
 
         return rental;
     }

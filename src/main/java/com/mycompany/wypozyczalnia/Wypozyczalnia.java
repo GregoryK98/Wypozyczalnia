@@ -112,7 +112,8 @@ public class Wypozyczalnia {
         System.out.println(clientService.showAll());
     }
 
-    private static void showEquipment(EquipmentService equipmentService) {System.out.println(equipmentService.showAllEq());
+    private static void showEquipment(EquipmentService equipmentService) {
+        System.out.println(equipmentService.showAllEq());
     }
     private static void showRental(RentalService rentalService) {
         System.out.println(rentalService.showAll());

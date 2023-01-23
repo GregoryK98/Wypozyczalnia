@@ -20,7 +20,7 @@ public class EquipmentService {
         if (!equipmentValidator.validateEq(equipment))
             return "Equipment cannot be added because is not valid.\n";
         try {
-            _equipmentRepository.createEq(equipment);
+            _equipmentRepository.create(equipment);
         } catch (Exception e) {
             return e.getMessage();
         }
@@ -33,7 +33,7 @@ public class EquipmentService {
         if (!equipmentValidator.validateEq(equipment))
             return "Equipment cannot be updated because new equipmnets data are not not valid.\n";
         try {
-            _equipmentRepository.updateEq(equipment);
+            _equipmentRepository.update(equipment);
         } catch (Exception e) {
             return e.getMessage();
         }
