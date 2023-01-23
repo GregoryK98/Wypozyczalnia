@@ -18,6 +18,7 @@ public class DataValidator {
             Date parsedDate = sdf.parse(date);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(parsedDate);
+            /*
             int year = calendar.get(Calendar.YEAR);
             if (year % 4 == 0) {
                 if (year % 100 == 0) {
@@ -29,6 +30,8 @@ public class DataValidator {
                 }
             }
             return false;
+             */
+            return true;
         } catch (Exception e) {
             return false;
         }
